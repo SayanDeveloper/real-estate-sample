@@ -1,33 +1,82 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Box, Button, Divider, Flex, Input, Select, Text } from '@chakra-ui/react'
 import HouseCard from './HouseCard';
+import { data } from '../dummyData/houses';
 
 const MainContent = () => {
 
-    const [locationFilter, setLocationFilter] = useState("");
+    // states
+    const [houseData, setHouseData] = useState(data);
+    const [locationFilter, setLocationFilter] = useState("label");
     const [dateFilter, setDateFilter] = useState("");
-    const [priceFilter, setPriceFilter] = useState();
-    const [typeFilter, setTypeFilter] = useState();
+    const [priceFilter, setPriceFilter] = useState("label");
+    const [typeFilter, setTypeFilter] = useState("all");
+    const [clearBtnVisible, setClearBtnVisible] = useState(false)
+    // refs
     const dateLabel = useRef();
+
+    // filter function based on criterias
+    const filterHouse = () => {
+        setClearBtnVisible(true);
+        let temp = data
+        if (locationFilter !== "label") {
+            temp = data.filter(each => each.location === locationFilter);
+        }
+        if (priceFilter === "500") {
+            temp = temp.filter(each => each.rent >= 500 && each.rent <= 2500)
+        }   else if (priceFilter === "2500") {
+            temp = temp.filter(each => each.rent >= 2500 && each.rent <= 5000)
+        }   else if (priceFilter === "5000") {
+            temp = temp.filter(each => each.rent >= 5000 && each.rent <= 10000)
+        }
+        if (typeFilter === "house") {
+            temp = temp.filter(each => each.type === "house")
+        }   else if (typeFilter === "flat") {
+            temp = temp.filter(each => each.type === "flat")
+        }
+        setHouseData(temp);
+    }
+
+    // search functions
+    const searchFunction = (query) => {
+        setHouseData(data.filter(each => each.name.toLowerCase().includes(query.toLowerCase())))
+    }
+
+    // to clear all filters
+    const clearFilter = () => {
+        setClearBtnVisible(false);
+        setLocationFilter("label");
+        setPriceFilter("label");
+        setTypeFilter("all")
+        setHouseData(data);
+    }
 
     return (
         <Box bg="#f8f7fd" minH="calc(100vh - 85px)">
             <Box w="1000px" margin={"auto"}>
                 <Flex justifyContent="space-between" alignItems="center" pt="40px">
                     <Text fontSize="35px" fontWeight="600">Search properties to rent</Text>
-                    <Input type="search" w="260px" placeholder='Search with Search Bar' bg="white" />
+                    <Input 
+                        type="search" 
+                        w="260px" 
+                        placeholder='Search with Search Bar' 
+                        bg="white"
+                        // value={searchQuery}
+                        onChange={(e) => {
+                            searchFunction(e.target.value)
+                            // setSearchQuery(e.target.value)
+                        }} 
+                        />
                 </Flex>
                 <Flex bg="white" borderRadius={"10px"} boxShadow="0px 0px 4px #eef" mt="25px" p="20px"
                     justifyContent="space-between" alignItems="center">
                     <Box>
                         <Text>Location</Text>
-                        <Select defaultValue="label" variant="flushed" size='md'>
+                        <Select variant="flushed" size='md' value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)}>
                             <option disabled={true} value="label">Choose Location</option>
-                            <option value="">New York, USA</option>
-                            <option value="">Chicago, USA</option>
-                            <option value="">Los Angeles, USA</option>
-                            <option value="">London, England</option>
-                            <option value="">Manchester, England</option>
+                            <option value="new-york">New York, USA</option>
+                            <option value="chicago">Chicago, USA</option>
+                            <option value="los-angeles">Los Angeles, USA</option>
                         </Select>
                     </Box>
                     <Divider orientation='vertical' w="3px" color={"black !important"} h="60px" />
@@ -40,7 +89,6 @@ const MainContent = () => {
                             cursor="pointer" 
                             border="none"
                             onChange={(e) => {
-                                console.log(e.target.value);
                                 setDateFilter(e.target.value);
                             }}
                             onFocus={() => {
@@ -54,33 +102,41 @@ const MainContent = () => {
                     <Divider orientation='vertical' w="3px" color={"black !important"} h="60px" />
                     <Box>
                         <Text>Price</Text>
-                        <Select defaultValue="label" variant="flushed" size='md'>
+                        <Select variant="flushed" size='md' value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
                             <option disabled={true} value="label">Choose Price</option>
-                            <option value="0">$500 - $2500</option>
-                            <option value="0">$2500 - $5000</option>
-                            <option value="0">$5000 - $10000</option>
+                            <option value="500">$500 - $2500</option>
+                            <option value="2500">$2500 - $5000</option>
+                            <option value="5000">$5000 - $10000</option>
                         </Select>
                     </Box>
                     <Divider orientation='vertical' w="3px" color={"black !important"} h="60px" />
                     <Box>
                         <Text>Property Type</Text>
-                        <Select defaultValue={"label"} variant="flushed" size='md'>
-                            <option value="label" disabled={true}>Choose Type</option>
-                            <option value="">Houses</option>
-                            <option value="">Flat</option>
-                            <option value="">All</option>
+                        <Select value={typeFilter} variant="flushed" size='md' onChange={(e) => setTypeFilter(e.target.value)}>
+                            <option value="all">All</option>
+                            <option value="house">Houses</option>
+                            <option value="flat">Flat</option>
                         </Select>
                     </Box>
                     <Divider orientation='vertical' w="3px" color={"black !important"} h="60px" />
-                    <Button size="lg" colorScheme="purple">Search</Button>
+                    <Flex direction="column" gap="5px">
+                        <Button colorScheme="purple" w="110px"
+                            onClick={filterHouse}>
+                            Search
+                        </Button>
+                        {clearBtnVisible &&
+                        <Button onClick={clearFilter}>Clear Filter</Button>
+                        }
+                    </Flex>
                 </Flex>
-                <Flex justifyContent={"space-between"} wrap="wrap">
-                    <HouseCard />
-                    <HouseCard />
-                    <HouseCard />
-                    <HouseCard />
-                    <HouseCard />
-                    <HouseCard />
+                <Flex className='flex-maintain' direction={"row"} justifyContent={"center"} gap="35px" wrap="wrap" pb="30px" w="100%">
+                    {
+                        houseData.map((each, index) => {
+                            return (
+                                <HouseCard key={index} details={each} />
+                            )
+                        })
+                    }
                 </Flex>
             </Box>
         </Box>
