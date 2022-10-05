@@ -19,7 +19,7 @@ const Navbar = () => {
                 py={{ base: 2 }}
                 px={{ base: 4 }}
                 align={'center'}
-                w="1280px"
+                w={{base: "100%", xl: "1280px"}}
                 margin={"auto"}
             >
                 <Flex

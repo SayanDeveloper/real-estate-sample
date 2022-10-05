@@ -11,6 +11,7 @@ import home9 from "../assets/home9.jpeg";
 export const data = [
     {
         name: "Palm Harbor",
+        popular: true,
         rent: 2095,
         location: "los-angeles",
         address: "2699, Green Valley, Highland Lake",
@@ -25,6 +26,7 @@ export const data = [
     },
     {
         name: "Beverly Springfield",
+        popular: true,
         rent: 2700,
         location: "chicago",
         address: "2699, Green Valley, Highland Lake",
@@ -39,6 +41,7 @@ export const data = [
     },
     {
         name: "Faulkner Ave",
+        popular: true,
         rent: 4550,
         location: "new-york",
         address: "2699, Green Valley, Highland Lake",
@@ -53,6 +56,7 @@ export const data = [
     },
     {
         name: "Woodlands",
+        popular: false,
         rent: 3000,
         location: "los-angeles",
         address: "2699, Green Valley, Highland Lake",
@@ -67,6 +71,7 @@ export const data = [
     },
     {
         name: "Gardimour",
+        popular: false,
         rent: 8000,
         location: "los-angeles",
         address: "2699, Green Valley, Highland Lake",
@@ -81,6 +86,7 @@ export const data = [
     },
     {
         name: "Tantleld",
+        popular: false,
         rent: 1700,
         location: "chicago",
         address: "2699, Green Valley, Highland Lake",
@@ -95,6 +101,7 @@ export const data = [
     },
     {
         name: "Davenguard",
+        popular: false,
         rent: 8700,
         location: "chicago",
         address: "2699, Green Valley, Highland Lake",
@@ -109,6 +116,7 @@ export const data = [
     },
     {
         name: "Crowland",
+        popular: false,
         rent: 2200,
         location: "new-york",
         address: "2699, Green Valley, Highland Lake",
@@ -123,6 +131,7 @@ export const data = [
     },
     {
         name: "Rainmere",
+        popular: false,
         rent: 9000,
         location: "new-york",
         address: "2699, Green Valley, Highland Lake",
